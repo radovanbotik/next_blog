@@ -4,13 +4,11 @@ import Modal from "../../../ui/modals/Modal";
 import SocialMedia from "./SocialMedia";
 import { ShareIcon } from "@heroicons/react/20/solid";
 
-type Props = {
-  currentPage: string;
-};
-
-export default function ShareArticle(props: Props) {
+export default function ShareArticle() {
   const [clicked, setClicked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const currentPage = window.location.href;
 
   useEffect(() => {
     if (isOpen) setClicked(true);
@@ -25,7 +23,7 @@ export default function ShareArticle(props: Props) {
         header={"Where to share?"}
         subheader={"Choose a platform to share this article."}
       >
-        <SocialMedia currentPage={props.currentPage} />
+        <SocialMedia currentPage={currentPage} />
       </Modal>
       <button
         type="button"
