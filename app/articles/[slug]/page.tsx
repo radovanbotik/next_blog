@@ -93,9 +93,7 @@ export default async function Article(props: Props) {
             <div className="text-base leading-7 text-gray-700 lg:max-w-lg">
               <p className="text-base font-semibold leading-7 text-indigo-600">{data.date}</p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{data.title}</h1>
-              <div className="w-full flex justify-end">
-                <ShareArticle />
-              </div>
+              <div className="w-full flex justify-end">{/* <ShareArticle /> */}</div>
               <div className="max-w-xl">
                 <div className="mt-6" dangerouslySetInnerHTML={{ __html: data.html }}></div>
               </div>
