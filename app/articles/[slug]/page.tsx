@@ -1,17 +1,18 @@
 import Image from "next/image";
 import { getReview, getSlugs } from "@/app/lib/data";
-import { ReactNode } from "react";
 import ShareArticle from "./components/ShareArticle";
 import Link from "next/link";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
   params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const slug = params.slug;
   return {
-    title: params.slug,
+    title: slug,
   };
 }
 
