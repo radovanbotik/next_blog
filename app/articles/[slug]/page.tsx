@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getReview, getSlugs } from "@/app/lib/data";
 import { ReactNode } from "react";
-import ShareArticle from "@/app/articles/[slug]/components/ShareArticle";
+import ShareArticle from "./components/ShareArticle";
 import Link from "next/link";
 
 type Props = {
@@ -22,6 +22,10 @@ export async function generateStaticParams() {
 
 export default async function Article(props: Props) {
   const data = await getReview(props.params.slug);
+  let currentPage: string;
+  if (typeof window !== "undefined") {
+    currentPage = window.location.href;
+  }
 
   return (
     <div className="bg-white py-24 sm:py-32">
@@ -93,7 +97,7 @@ export default async function Article(props: Props) {
               <p className="text-base font-semibold leading-7 text-indigo-600">{data.date}</p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{data.title}</h1>
               <div className="w-full flex justify-end">
-                <ShareArticle />
+                <ShareArticle currentPage={currentPage} />
               </div>
               <div className="max-w-xl">
                 <div className="mt-6" dangerouslySetInnerHTML={{ __html: data.html }}></div>

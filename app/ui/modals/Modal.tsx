@@ -16,9 +16,6 @@ type ModalProps = {
 export default function Modal(props: ModalProps) {
   const { isOpen, setIsOpen } = props;
 
-  const articleUrl = window.location.href;
-  console.log(articleUrl);
-
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog onClose={() => setIsOpen(false)} className={"relative z-50"}>

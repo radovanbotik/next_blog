@@ -7,7 +7,7 @@ import Avatar from "../../../ui/avatars/Avatar";
 import Input from "../../../ui/input/Input";
 
 type Props = {
-  defaultValue: string;
+  currentPage: string;
 };
 
 const platforms = [
@@ -28,7 +28,7 @@ export default function SocialMedia(props: Props) {
         </div>
       </div>
       <div className="mt-5 sm:mt-6">
-        <Input buttonText="Share" readOnly={true} defaultValue={props.defaultValue} />
+        <Input buttonText="Share" readOnly={true} defaultValue={props.currentPage} />
       </div>
     </Fragment>
   );
