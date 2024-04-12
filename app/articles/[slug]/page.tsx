@@ -3,13 +3,13 @@ import { getReview, getSlugs } from "@/app/lib/data";
 import { ReactNode } from "react";
 import ShareArticle from "./components/ShareArticle";
 import Link from "next/link";
+import { Metadata } from "next";
 
 type Props = {
   params: { slug: string };
-  children?: ReactNode;
 };
 
-export async function generateMetadata({ params }: Omit<Props, "children">) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: params.slug,
   };
