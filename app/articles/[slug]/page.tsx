@@ -20,16 +20,9 @@ export async function generateStaticParams() {
   return slugs.map(slug => ({ slug: slug }));
 }
 
-export default async function Example(props: Props) {
+export default async function Article(props: Props) {
   const data = await getReview(props.params.slug);
 
-  // <div>
-  //   <h1 className="text-4xl">{data.title}</h1>
-  //   <ShareArticle />
-  //   <p>{data.date}</p>
-  //   <Image src={`/${data.image}`} width={1007} height={542} alt="article image" />
-  //   <div dangerouslySetInnerHTML={{ __html: data.html }} className="prose mx-auto"></div>
-  // </div>
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
