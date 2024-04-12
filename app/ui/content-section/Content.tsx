@@ -1,55 +1,23 @@
-import Image from "next/image";
-import { getReview, getSlugs } from "@/app/lib/data";
-import { ReactNode } from "react";
-import ShareArticle from "@/app/articles/[slug]/components/ShareArticle";
-import Link from "next/link";
+const stats = [
+  { label: "Founded", value: "2021" },
+  { label: "Employees", value: "37" },
+  { label: "Countries", value: "12" },
+  { label: "Raised", value: "$25M" },
+];
 
-type Props = {
-  params: { slug: string };
-  children?: ReactNode;
-};
-
-export async function generateMetadata({ params }: Omit<Props, "children">) {
-  return {
-    title: params.slug,
-  };
-}
-
-export async function generateStaticParams() {
-  const slugs = await getSlugs();
-  return slugs.map(slug => ({ slug: slug }));
-}
-
-export default async function Example(props: Props) {
-  const data = await getReview(props.params.slug);
-
-  // <div>
-  //   <h1 className="text-4xl">{data.title}</h1>
-  //   <ShareArticle />
-  //   <p>{data.date}</p>
-  //   <Image src={`/${data.image}`} width={1007} height={542} alt="article image" />
-  //   <div dangerouslySetInnerHTML={{ __html: data.html }} className="prose mx-auto"></div>
-  // </div>
+export default function Content() {
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-          {/* <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{data.title}</h1> */}
-          {/* Image */}
           <div className="lg:pr-4">
             <div className="relative overflow-hidden rounded-3xl bg-gray-900 px-6 pb-9 pt-64 shadow-2xl sm:px-12 lg:max-w-lg lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
-              {/* Actual Image */}
-              <Image
-                src={`/${data.image}`}
-                width={1007}
-                height={542}
-                alt="article image"
+              <img
                 className="absolute inset-0 h-full w-full object-cover brightness-125 saturate-0"
+                src="https://images.unsplash.com/photo-1630569267625-157f8f9d1a7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80"
+                alt=""
               />
-
-              {/* Mix blend mode to tint colors */}
-              <div className="absolute inset-0 bg-gray-900/40 mix-blend-multiply" />
-              {/* Extra Layer to mix colours */}
+              <div className="absolute inset-0 bg-gray-900 mix-blend-multiply" />
               <div
                 className="absolute left-1/2 top-1/2 -ml-16 -translate-x-1/2 -translate-y-1/2 transform-gpu blur-3xl"
                 aria-hidden="true"
@@ -62,9 +30,7 @@ export default async function Example(props: Props) {
                   }}
                 />
               </div>
-              {/* Written image content */}
               <figure className="relative isolate">
-                {/* Quation mark */}
                 <svg
                   viewBox="0 0 162 128"
                   fill="none"
@@ -77,40 +43,56 @@ export default async function Example(props: Props) {
                   />
                   <use href="#0ef284b8-28c2-426e-9442-8655d393522e" x={86} />
                 </svg>
-                {/* Extra logo */}
                 <img src="https://tailwindui.com/img/logos/workcation-logo-white.svg" alt="" className="h-12 w-auto" />
-                {/* Author quote */}
                 <blockquote className="mt-6 text-xl font-semibold leading-8 text-white">
                   <p>
                     “Amet amet eget scelerisque tellus sit neque faucibus non eleifend. Integer eu praesent at a. Ornare
                     arcu gravida natoque erat et cursus tortor.”
                   </p>
                 </blockquote>
-                {/* Author Info */}
                 <figcaption className="mt-6 text-sm leading-6 text-gray-300">
-                  <strong className="font-semibold text-white">{data.title},</strong> author
+                  <strong className="font-semibold text-white">Judith Rogers,</strong> CEO at Workcation
                 </figcaption>
               </figure>
             </div>
           </div>
-          {/* Content + CTA */}
           <div>
-            {/* The actual content */}
             <div className="text-base leading-7 text-gray-700 lg:max-w-lg">
-              <p className="text-base font-semibold leading-7 text-indigo-600">{data.date}</p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{data.title}</h1>
-              <div className="w-full flex justify-end">
-                <ShareArticle />
-              </div>
+              <p className="text-base font-semibold leading-7 text-indigo-600">Company values</p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                On a mission to empower remote teams
+              </h1>
               <div className="max-w-xl">
-                <div className="mt-6" dangerouslySetInnerHTML={{ __html: data.html }}></div>
+                <p className="mt-6">
+                  Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet
+                  vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit neque
+                  erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris
+                  semper sed amet vitae sed turpis id.
+                </p>
+                <p className="mt-8">
+                  Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id blandit molestie
+                  auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel. Mauris varius vulputate et ultrices
+                  hac adipiscing egestas. Iaculis convallis ac tempor et ut. Ac lorem vel integer orci.
+                </p>
+                <p className="mt-8">
+                  Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id blandit molestie
+                  auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel. Mauris varius vulputate et ultrices
+                  hac adipiscing egestas. Iaculis convallis ac tempor et ut. Ac lorem vel integer orci.
+                </p>
               </div>
             </div>
-            {/* CTA */}
+            <dl className="mt-10 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10 sm:grid-cols-4">
+              {stats.map((stat, statIdx) => (
+                <div key={statIdx}>
+                  <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.label}</dt>
+                  <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
             <div className="mt-10 flex">
-              <Link href="/articles" className="text-base font-semibold leading-7 text-indigo-600">
-                Back to articles <span aria-hidden="true">&rarr;</span>
-              </Link>
+              <a href="#" className="text-base font-semibold leading-7 text-indigo-600">
+                Learn more about our company <span aria-hidden="true">&rarr;</span>
+              </a>
             </div>
           </div>
         </div>

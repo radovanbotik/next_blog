@@ -22,3 +22,9 @@ export async function getReviews() {
   const articles = await Promise.all(articlesPromises);
   return articles;
 }
+
+export async function getSlugs() {
+  const readFiles = await readdir("app/content/articles");
+  const slugs = readFiles.map(file => file.split(".")[0]);
+  return slugs;
+}
