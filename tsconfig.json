@@ -22,15 +22,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": [
-    "node_modules/",
-    "build/",
-    "dist/",
-    ".cache/",
-    ".cms",
-    "src/admin/",
-    "**/*.test.ts",
-    "src/plugins/**",
-    "types/generated/**"
-  ]
+  "exclude": ["node_modules"]
 }
