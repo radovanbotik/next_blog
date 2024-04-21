@@ -27,7 +27,7 @@
     "build/",
     "dist/",
     ".cache/",
-    "cms",
+    ".cms",
     "src/admin/",
     "**/*.test.ts",
     "src/plugins/**",
