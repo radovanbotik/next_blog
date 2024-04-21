@@ -1,6 +1,11 @@
-export default function Messenger() {
+import clsx from "clsx";
+import { ComponentPropsWithoutRef } from "react";
+
+type SVG = ComponentPropsWithoutRef<"svg">;
+
+export default function Messenger({ className, ...props }: SVG) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48">
+    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48" className={clsx(className)} {...props}>
       <radialGradient
         id="8O3wK6b5ASW2Wn6hRCB5xa_YFbzdUk7Q3F8_gr1"
         cx="11.087"

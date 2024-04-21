@@ -11,9 +11,12 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.3",
+    "clsx": "^2.1.0",
     "gray-matter": "^4.0.3",
     "marked": "^12.0.1",
     "next": "14.1.4",
+    "next-themes": "^0.3.0",
+    "qs": "^6.12.1",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -21,6 +24,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.12",
     "@types/node": "^20",
+    "@types/qs": "^6.9.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",

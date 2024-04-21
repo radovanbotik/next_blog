@@ -1,30 +1,89 @@
-import { readFile, readdir } from "fs/promises";
+import qs from "qs";
 import { marked } from "marked";
-import matter from "gray-matter";
-const fs = require("fs");
+
+type ArticleResponse = {
+  id: number;
+  attributes: {
+    title: string;
+    slug: string;
+    subtitle: string;
+    publishedAt: Date;
+    body: string;
+    image: {
+      data: [
+        {
+          attributes: {
+            url: string;
+          };
+        }
+      ];
+    };
+  };
+};
+
+const CMS_URL = "http://localhost:1337";
+
+function toReview(object: ArticleResponse) {
+  const { attributes } = object;
+  const html = marked.parse(attributes.body);
+  return {
+    slug: attributes.slug,
+    title: attributes.title,
+    subtitle: attributes.subtitle,
+    html: html as string,
+    date: new Date(attributes.publishedAt).toLocaleDateString(),
+    image: `${CMS_URL}${attributes.image.data[0].attributes.url}`,
+  };
+}
 
 export async function getReview(slug: string) {
-  const article = await readFile(`app/content/articles/${slug}.md`, "utf-8");
-  const { data, content } = matter(article);
-  const html = marked.parse(content);
-  const date = new Date(data.date).toLocaleDateString();
-  return { title: data.title, date: date, image: data.image, html: html, slug: slug };
+  const url = `http://localhost:1337/api/articles?${qs.stringify(
+    {
+      filters: {
+        slug: {
+          $eq: slug,
+        },
+      },
+      populate: { image: { fields: ["url"] } },
+      pagination: { pageSize: 1, withCount: false },
+    },
+    { encodeValuesOnly: true }
+  )}`;
+  const response = await fetch(url);
+  const { data } = await response.json();
+  return toReview(data[0]);
 }
 
 export async function getReviews() {
-  const readFiles = await readdir("app/content/articles");
-  const slugs = readFiles.map(file => file.split(".")[0]);
-  const articlesPromises = [];
-  for (const slug of slugs) {
-    const article = await getReview(slug);
-    articlesPromises.push(article);
-  }
-  const articles = await Promise.all(articlesPromises);
-  return articles;
+  const url = `http://localhost:1337/api/articles?${qs.stringify(
+    {
+      fields: ["slug", "title", "subtitle", "publishedAt", "body"],
+      populate: { image: { fields: ["url"] } },
+      pagination: { pageSize: 6 },
+      sort: ["publishedAt:desc"],
+    },
+    { encodeValuesOnly: true }
+  )}`;
+  const response = await fetch(url);
+  const { data } = await response.json();
+  return data.map(toReview);
 }
 
 export async function getSlugs() {
-  const readFiles = await readdir("app/content/articles");
-  const slugs = readFiles.map(file => file.split(".")[0]);
+  const url = `http://localhost:1337/api/articles?${qs.stringify(
+    {
+      fields: ["slug"],
+      sort: ["publishedAt:desc"],
+      pagination: { pageSize: 100 },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  )}`;
+  const response = await fetch(url);
+  const { data } = await response.json();
+  const slugs = data.map((article: ArticleResponse) => {
+    return article.attributes.slug;
+  });
   return slugs;
 }

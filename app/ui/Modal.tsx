@@ -1,9 +1,9 @@
 "use client";
-import { useState, Fragment, ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
-import CircularButton from "../buttons/CircularButton";
-import Divider from "../dividers/Divider";
+import Divider from "./Divider";
+import Button from "./Button";
 
 type ModalProps = {
   isOpen: boolean;
@@ -52,7 +52,9 @@ export default function Modal(props: ModalProps) {
               >
                 {/* Close Panel Icon Button */}
                 <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-                  <CircularButton buttonText="Close panel" icon={XMarkIcon} onClick={() => setIsOpen(false)} />
+                  <Button onClick={() => setIsOpen(false)} variant="secondary">
+                    <XMarkIcon className="w-4 h-4" />
+                  </Button>
                 </div>
                 {/* Header, Title */}
                 <Fragment>
