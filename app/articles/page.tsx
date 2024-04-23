@@ -1,6 +1,7 @@
 import { getReviews } from "../lib/data";
 import { Article as ArticleProps } from "../lib/types";
 import Card from "../ui/CardHighlight";
+import Pagination from "../ui/Pagination";
 import SimpleLayout from "../ui/SimpleLayout";
 
 function Article(article: ArticleProps) {
@@ -16,12 +17,25 @@ function Article(article: ArticleProps) {
     </Card>
   );
 }
+const PAGE_SIZE = 6;
 
-// export const forceDynamic = "force-dynamic";
-export const revalidate = 60;
+//validates and return correct page count, searchparams.page does not exists it returns 1
+function validatePageParam(pageParamValue: string | undefined) {
+  if (pageParamValue) {
+    const pageCount = Number(pageParamValue);
+    if (isFinite(pageCount) && pageCount > 0) {
+      return pageCount;
+    }
+  }
+  return 1;
+}
 
-export default async function page() {
-  const articles = await getReviews();
+export default async function page(props: { params: {}; searchParams: { page?: string } }) {
+  //if search params exists set pageCount to searchParams.page, otherwise set pageCount to 1
+  // const pageCount = props.searchParams ? Number(props.searchParams.page) : Number(1);
+  const currentPage = validatePageParam(props.searchParams.page);
+  const { articles, pagination } = await getReviews({ pageSize: PAGE_SIZE, pageCount: currentPage });
+  console.log(pagination);
 
   return (
     <SimpleLayout
@@ -37,6 +51,7 @@ export default async function page() {
           ))}
         </div>
       </div>
+      <Pagination className="mt-16" pagination={pagination} />
     </SimpleLayout>
   );
 }

@@ -26,12 +26,13 @@ async function fetchReviews(params: {
   filters?: {};
   fields?: string[];
   populate?: {};
-  pagination?: { pageSize: number; withCount?: boolean };
+  pagination?: { pageSize?: number; page?: number; withCount?: boolean };
   sort?: string[];
 }) {
   const url = `${CMS_URL}/api/articles?${qs.stringify(params, { encodeValuesOnly: true })}`;
   //revalidatation fires when strapi webhook post same tag to next.js server
   const response = await fetch(url, { next: { tags: [CACHE_TAG_ARTICLES] } });
+  console.log(url);
   if (!response.ok) {
     throw new Error(`CMS returned ${response.status} for ${url}`);
   }
@@ -67,14 +68,16 @@ export async function getReview(slug: string) {
   return toReview(data[0]);
 }
 
-export async function getReviews() {
-  const { data } = await fetchReviews({
+export async function getReviews({ pageSize, pageCount }: { pageSize?: number; pageCount?: number }) {
+  const { data, meta } = await fetchReviews({
     fields: ["slug", "title", "subtitle", "publishedAt", "body"],
     populate: { image: { fields: ["url"] } },
-    pagination: { pageSize: 6 },
-    sort: ["publishedAt:desc"],
+    pagination: { pageSize: pageSize, page: pageCount },
+    sort: ["publishedAt:asc"],
   });
-  return data.map(toReview);
+  // return data.map(toReview);
+  const articles = data.map(toReview);
+  return { articles: articles, pagination: meta.pagination };
 }
 
 export async function getSlugs() {

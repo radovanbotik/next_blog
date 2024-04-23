@@ -14,7 +14,7 @@ import Resume from "./ui/Resume";
 // Photos is not using any sort of container and therefore spans entire Screen-Width
 
 export default async function Example() {
-  const articles = await getReviews();
+  const { articles } = await getReviews({ pageSize: 2 });
 
   return (
     <>
