@@ -19,6 +19,7 @@ type ArticleResponse = {
   };
 };
 
+export const CACHE_TAG_ARTICLES = "articles";
 const CMS_URL = "http://localhost:1337";
 
 async function fetchReviews(params: {
@@ -29,7 +30,8 @@ async function fetchReviews(params: {
   sort?: string[];
 }) {
   const url = `${CMS_URL}/api/articles?${qs.stringify(params, { encodeValuesOnly: true })}`;
-  const response = await fetch(url, { next: { revalidate: 120 } });
+  //revalidatation fires when strapi webhook post same tag to next.js server
+  const response = await fetch(url, { next: { tags: [CACHE_TAG_ARTICLES] } });
   if (!response.ok) {
     throw new Error(`CMS returned ${response.status} for ${url}`);
   }
