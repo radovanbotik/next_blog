@@ -1,6 +1,7 @@
 import { getReview, getSlugs } from "@/app/lib/data";
 import ArticleLayout from "@/app/ui/ArticleLayout";
 import { Metadata, ResolvingMetadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { slug: string };
@@ -9,6 +10,10 @@ type Props = {
 
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const slug = params.slug;
+  const review = await getReview(slug);
+  if (!review) {
+    notFound();
+  }
   return {
     title: slug,
   };
@@ -21,6 +26,6 @@ export async function generateStaticParams() {
 
 export default async function Article(props: Props) {
   const data = await getReview(props.params.slug);
-
+  if (!data) notFound();
   return <ArticleLayout article={data} />;
 }

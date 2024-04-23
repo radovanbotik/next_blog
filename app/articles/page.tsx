@@ -17,6 +17,9 @@ function Article(article: ArticleProps) {
   );
 }
 
+// export const forceDynamic = "force-dynamic";
+export const revalidate = 60;
+
 export default async function page() {
   const articles = await getReviews();
 

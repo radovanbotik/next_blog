@@ -10,18 +10,31 @@ type ArticleResponse = {
     publishedAt: Date;
     body: string;
     image: {
-      data: [
-        {
-          attributes: {
-            url: string;
-          };
-        }
-      ];
+      data: {
+        attributes: {
+          url: string;
+        };
+      };
     };
   };
 };
 
 const CMS_URL = "http://localhost:1337";
+
+async function fetchReviews(params: {
+  filters?: {};
+  fields?: string[];
+  populate?: {};
+  pagination?: { pageSize: number; withCount?: boolean };
+  sort?: string[];
+}) {
+  const url = `${CMS_URL}/api/articles?${qs.stringify(params, { encodeValuesOnly: true })}`;
+  const response = await fetch(url, { next: { revalidate: 120 } });
+  if (!response.ok) {
+    throw new Error(`CMS returned ${response.status} for ${url}`);
+  }
+  return await response.json();
+}
 
 function toReview(object: ArticleResponse) {
   const { attributes } = object;
@@ -32,40 +45,33 @@ function toReview(object: ArticleResponse) {
     subtitle: attributes.subtitle,
     html: html as string,
     date: new Date(attributes.publishedAt).toLocaleDateString(),
-    image: `${CMS_URL}${attributes.image.data[0].attributes.url}`,
+    image: `${CMS_URL}${attributes.image.data.attributes.url}`,
   };
 }
 
 export async function getReview(slug: string) {
-  const url = `http://localhost:1337/api/articles?${qs.stringify(
-    {
-      filters: {
-        slug: {
-          $eq: slug,
-        },
+  const { data } = await fetchReviews({
+    filters: {
+      slug: {
+        $eq: slug,
       },
-      populate: { image: { fields: ["url"] } },
-      pagination: { pageSize: 1, withCount: false },
     },
-    { encodeValuesOnly: true }
-  )}`;
-  const response = await fetch(url);
-  const { data } = await response.json();
+    populate: { image: { fields: ["url"] } },
+    pagination: { pageSize: 1, withCount: false },
+  });
+  if (data.length === 0) {
+    return null;
+  }
   return toReview(data[0]);
 }
 
 export async function getReviews() {
-  const url = `http://localhost:1337/api/articles?${qs.stringify(
-    {
-      fields: ["slug", "title", "subtitle", "publishedAt", "body"],
-      populate: { image: { fields: ["url"] } },
-      pagination: { pageSize: 6 },
-      sort: ["publishedAt:desc"],
-    },
-    { encodeValuesOnly: true }
-  )}`;
-  const response = await fetch(url);
-  const { data } = await response.json();
+  const { data } = await fetchReviews({
+    fields: ["slug", "title", "subtitle", "publishedAt", "body"],
+    populate: { image: { fields: ["url"] } },
+    pagination: { pageSize: 6 },
+    sort: ["publishedAt:desc"],
+  });
   return data.map(toReview);
 }
 

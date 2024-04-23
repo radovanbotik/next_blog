@@ -12,8 +12,8 @@ import ShareArticle from "./ShareArticle";
 export default function ArticleLayout({ article, children }: { article: Article; children?: ReactNode }) {
   let router = useRouter();
   let { previousPathname } = useContext(AppContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const currentPage = window.location.href;
+  // const currentPage = window.location.href;
+  const currentPage = "";
 
   return (
     <Container className="mt-16 lg:mt-32">
