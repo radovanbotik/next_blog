@@ -1,7 +1,9 @@
 import { getReviews } from "../lib/data";
 import { Article as ArticleProps } from "../lib/types";
 import Card from "../ui/CardHighlight";
+import Combo from "../ui/Combobox";
 import Pagination from "../ui/Pagination";
+import Search from "../ui/Search";
 import SimpleLayout from "../ui/SimpleLayout";
 
 function Article(article: ArticleProps) {
@@ -35,7 +37,7 @@ export default async function page(props: { params: {}; searchParams: { page?: s
   // const pageCount = props.searchParams ? Number(props.searchParams.page) : Number(1);
   const currentPage = validatePageParam(props.searchParams.page);
   const { articles, pagination } = await getReviews({ pageSize: PAGE_SIZE, pageCount: currentPage });
-  console.log(pagination);
+  console.log(articles);
 
   return (
     <SimpleLayout
@@ -44,6 +46,8 @@ export default async function page(props: { params: {}; searchParams: { page?: s
   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae incidunt, repellendus sapiente ea velit pariatur dolores ullam reiciendis. Blanditiis, nostrum.
   "
     >
+      {/* <Search /> */}
+      <Combo />
       <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         <div className="flex max-w-3xl flex-col space-y-16">
           {articles.map((article: ArticleProps) => (

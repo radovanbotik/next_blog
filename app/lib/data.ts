@@ -1,3 +1,4 @@
+import "server-only";
 import qs from "qs";
 import { marked } from "marked";
 
@@ -97,4 +98,21 @@ export async function getSlugs() {
     return article.attributes.slug;
   });
   return slugs;
+}
+
+export async function searchArticles({ query }: { query: string }) {
+  console.log(query);
+  const url = `${CMS_URL}/api/articles?${qs.stringify(
+    {
+      filters: { title: { $containsi: query } },
+      fields: ["slug", "title"],
+      sort: ["title"],
+      pagination: { pageSize: 5 },
+    },
+    { encodeValuesOnly: true }
+  )}`;
+  const response = await fetch(url);
+  const { data } = await response.json();
+  const articles = data.map(({ attributes }: { attributes: { title: string; slug: string } }) => ({ ...attributes }));
+  return articles;
 }
